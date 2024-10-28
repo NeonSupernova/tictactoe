@@ -1,0 +1,7 @@
+[author]
+name = "Your Name Here"
+notes = ""
+
+[bot]
+# Settings here
+run = "run command here"

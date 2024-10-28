@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Live Tournament Feed{% endblock %}
+{% block content %}
+<h2 class="text-2xl mb-4">Live Tournament Feed</h2>
+<div id="live-data" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Cards populated by JS with live data -->
+</div>
+<script>
+    const liveDataDiv = document.getElementById("live-data");
+
+    function updateLiveData() {
+        fetch('/api/live_feed')
+            .then(response => response.json())
+            .then(data => {
+                liveDataDiv.innerHTML = '';  // Clear existing data
+                data.forEach(item => {
+                    liveDataDiv.innerHTML += `
+                        <div class="border border-green-500 p-4">
+                            <h3 class="text-xl">${item.title}</h3>
+                            <p>${item.description}</p>
+                            <div>
+                                <canvas id="graph-${item.id}" class="w-full h-32"></canvas>
+                            </div>
+                        </div>
+                    `;
+                    renderGraph(`graph-${item.id}`, item.graphData);
+                });
+            });
+    }
+
+    function renderGraph(canvasId, graphData) {
+        // Assume graphData is suitable for Chart.js
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: graphData.labels,
+                datasets: [{
+                    label: graphData.label,
+                    data: graphData.data,
+                    borderColor: 'green',
+                    backgroundColor: 'transparent'
+                }]
+            }
+        });
+    }
+
+    setInterval(updateLiveData, 5000);  // Fetch data every 5 seconds
+</script>
+{% endblock %}

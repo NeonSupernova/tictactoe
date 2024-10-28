@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<h2 class="text-2xl mb-4">Login</h2>
+<form method="POST" action="/login" class="space-y-4">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" class="p-2 border border-green-500 bg-black text-green-500 w-full">
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="p-2 border border-green-500 bg-black text-green-500 w-full">
+    </div>
+    <button type="submit" class="p-2 bg-green-500 hover:bg-green-700 text-black">Login</button>
+</form>
+
+<div class="mt-4">
+    <p class="text-green-500">Don't have an account?</p>
+    <a href="/register" class="p-2 bg-green-500 hover:bg-green-700 text-black inline-block mt-2">Sign Up</a>
+</div>
+{% endblock %}

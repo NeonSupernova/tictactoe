@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2 class="text-2xl mb-4">Admin Dashboard</h2>
+<ul>
+    <li><a href="/admin/generate_token" class="underline text-green-500">Generate Token</a></li>
+    <li><a href="/admin/moderate" class="underline text-green-500">Moderate Users/Projects</a></li>
+</ul>
+{% endblock %}

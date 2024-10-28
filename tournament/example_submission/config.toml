@@ -1,0 +1,7 @@
+[author]
+name = "Gerrit Wielenga"
+version = "1a"
+
+[bot]
+# Settings here
+run = "python bot.py"

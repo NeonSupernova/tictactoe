@@ -1,0 +1,7 @@
+[author]
+name = "Your Name Here"
+notes = ""
+
+[bot]
+compile_command = "gcc -o bot bot.c"
+run = "./bot"

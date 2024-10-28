@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Submit Project{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl mb-4 text-center">Submit Your Project</h2>
+
+
+
+<div id="project-form">
+    <div class="space-y-4 mx-20 border-solid border-2 border-green-500 p-4">
+        <!-- Project Name Input -->
+        <div>
+            <label for="project_name" class="block mb-2">Project Name:</label>
+            <input type="text" id="project_name" name="project_name" class="p-2 border border-green-500 bg-black text-green-500 w-full" required>
+        </div>
+
+        <!-- Language Selector -->
+        <div>
+            <label for="language" class="block mb-2">Programming Language:</label>
+            <select id="language" name="language" class="p-2 border border-green-500 bg-black text-green-500 w-full" onchange="setSyntaxHighlighting()" required>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="cpp">C++</option>
+                <option value="java">Java</option>
+                <!-- Add more languages as needed -->
+            </select>
+        </div>
+
+        <!-- Program Code Textarea with Syntax Highlighting -->
+        <div>
+            <label for="program_code" class="block mb-2">Program:</label>
+            <textarea id="program_code" name="program_code" class="p-2 border border-green-500 bg-black text-green-500 w-full" rows="10" required></textarea>
+        </div>
+
+        <!-- README Field with Markdown Support -->
+        <div>
+            <label for="readme" class="block mb-2">README (Markdown):</label>
+            <textarea id="readme" name="readme" class="p-2 border border-green-500 bg-black text-green-500 w-full" rows="8" required></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submit-btn" class="p-2 bg-green-500 hover:bg-green-700 text-black">Submit Project</button>
+    </div>
+</div>
+{% if error %}
+<p class="text-red-500 mt-4">{{ error }}</p>
+{% elif success %}
+<p class="text-green-500 mt-4">Project submitted successfully!</p>
+{% endif %}
+
+<!-- CodeMirror (for syntax highlighting) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("program_code"), {
+        lineNumbers: true,
+        mode: "python",  // default to Python
+        theme: "material",
+        lineWrapping: true
+    });
+
+    function setSyntaxHighlighting() {
+        var language = document.getElementById('language').value;
+        var mode = "python";  // default to Python
+
+        if (language === "javascript") {
+            mode = "javascript";
+        } else if (language === "cpp") {
+            mode = "text/x-c++src";
+        } else if (language === "java") {
+            mode = "text/x-java";
+        }
+
+        editor.setOption("mode", mode);
+    }
+</script>
+
+<!-- SimpleMDE (for markdown support in README) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("readme"),
+        status: false,
+        toolbar: false,
+        autosave: {
+            enabled: true,
+            uniqueId: "readme"
+        }
+    });
+</script>
+<script>
+  document.getElementById('submit-btn').addEventListener('click', function() {
+    const data = {
+      name: document.getElementById('project_name').value,
+      lang: document.getElementById('language').value,
+      code: editor.getValue(),
+      readme: simplemde.value()
+    };
+
+    fetch('/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+  });
+</script>
+{% endblock %}

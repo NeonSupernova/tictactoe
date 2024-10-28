@@ -1,0 +1,7 @@
+[author]
+name = "Gerrit Wielenga"
+notes = "No Notes"
+
+[bot]
+# Settings here
+run = "./bot"

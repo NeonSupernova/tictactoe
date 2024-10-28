@@ -1,0 +1,6 @@
+[author]
+name = "Your Name Here"
+notes = ""
+
+[bot]
+run = "lua bot"
